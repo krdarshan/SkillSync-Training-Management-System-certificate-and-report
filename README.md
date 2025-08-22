@@ -26,4 +26,4 @@ The system ensures that administrators can manage training schedules, monitor at
 ## Installation
 1. Clone the repository:  
 ```bash
-[git clone https://github.com/your-username/repository-name.git](https://github.com/krdarshan/SkillSync-Training-Management-System-certificate-and-report)
+https://github.com/krdarshan/SkillSync-Training-Management-System-certificate-and-report
