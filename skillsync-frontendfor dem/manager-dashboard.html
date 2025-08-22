@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager Dashboard - SkillSync</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/dashboard.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>SkillSync</span>
+                </div>
+                
+                <nav>
+                    <ul class="nav-menu">
+                        <li><a href="manager-dashboard.html" class="active">Dashboard</a></li>
+                        <li><a href="manager-courses.html">Course Management</a></li>
+                        <li><a href="manager-users.html">User Management</a></li>
+                        <li><a href="manager-reports.html">Reports</a></li>
+                    </ul>
+                </nav>
+                
+                <div class="user-menu">
+                    <div class="user-info">
+                        <div class="user-avatar" id="userAvatar">MM</div>
+                        <span id="userName">Mike Manager</span>
+                    </div>
+                    <button class="btn btn-outline" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="dashboard">
+        <div class="container">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">Manager Dashboard</h1>
+                <p class="dashboard-subtitle">Comprehensive training management and analytics</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-title">Total Courses</span>
+                        <div class="stat-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value">24</div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>4 new this month</span>
+                    </div>
+                </div>
+
+                <div class="stat-card success">
+                    <div class="stat-header">
+                        <span class="stat-title">Active Users</span>
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value">156</div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>12 new users</span>
+                    </div>
+                </div>
+
+                <div class="stat-card warning">
+                    <div class="stat-header">
+                        <span class="stat-title">Completion Rate</span>
+                        <div class="stat-icon">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value">78%</div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>+3% this month</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-title">Certificates Issued</span>
+                        <div class="stat-icon">
+                            <i class="fas fa-certificate"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value">342</div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>28 this week</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-bar">
+                <h3 style="margin-bottom: 1rem;">Reports & Analytics</h3>
+                <div class="filter-row">
+                    <div class="form-group">
+                        <label for="courseFilter">Course</label>
+                        <select id="courseFilter" class="form-control">
+                            <option value="">All Courses</option>
+                            <option value="javascript">JavaScript Fundamentals</option>
+                            <option value="react">React Development</option>
+                            <option value="python">Python Programming</option>
+                            <option value="database">Database Design</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="departmentFilter">Department</label>
+                        <select id="departmentFilter" class="form-control">
+                            <option value="">All Departments</option>
+                            <option value="it">IT Department</option>
+                            <option value="hr">HR Department</option>
+                            <option value="sales">Sales Department</option>
+                            <option value="marketing">Marketing Department</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="dateFrom">From Date</label>
+                        <input type="date" id="dateFrom" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="dateTo">To Date</label>
+                        <input type="date" id="dateTo" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn btn-primary" onclick="generateReport()">
+                                <i class="fas fa-search"></i>
+                                Filter
+                            </button>
+                            <button class="btn btn-success" onclick="exportExcel()">
+                                <i class="fas fa-file-excel"></i>
+                                Excel
+                            </button>
+                            <button class="btn btn-danger" onclick="exportPDF()">
+                                <i class="fas fa-file-pdf"></i>
+                                PDF
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-content">
+                <div class="main-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Training Overview</h3>
+                            <div class="quick-actions">
+                                <button class="btn btn-primary" onclick="createCourse()">
+                                    <i class="fas fa-plus"></i>
+                                    New Course
+                                </button>
+                                <button class="btn btn-success" onclick="addUser()">
+                                    <i class="fas fa-user-plus"></i>
+                                    Add User
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Course Name</th>
+                                        <th>Trainer</th>
+                                        <th>Enrolled</th>
+                                        <th>Completed</th>
+                                        <th>Completion Rate</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>JavaScript Fundamentals</td>
+                                        <td>Sarah Trainer</td>
+                                        <td>25</td>
+                                        <td>20</td>
+                                        <td>
+                                            <div style="background: #e2e8f0; border-radius: 10px; height: 8px; width: 80px;">
+                                                <div style="background: #10b981; height: 100%; width: 80%; border-radius: 10px;"></div>
+                                            </div>
+                                            <small>80%</small>
+                                        </td>
+                                        <td><span class="badge badge-success">Active</span></td>
+                                        <td>
+                                            <button class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.75rem;" onclick="manageCourse('JavaScript Fundamentals')">
+                                                Manage
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>React Development</td>
+                                        <td>Sarah Trainer</td>
+                                        <td>18</td>
+                                        <td>12</td>
+                                        <td>
+                                            <div style="background: #e2e8f0; border-radius: 10px; height: 8px; width: 80px;">
+                                                <div style="background: #f59e0b; height: 100%; width: 67%; border-radius: 10px;"></div>
+                                            </div>
+                                            <small>67%</small>
+                                        </td>
+                                        <td><span class="badge badge-success">Active</span></td>
+                                        <td>
+                                            <button class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.75rem;" onclick="manageCourse('React Development')">
+                                                Manage
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Python Programming</td>
+                                        <td>Mike Manager</td>
+                                        <td>22</td>
+                                        <td>8</td>
+                                        <td>
+                                            <div style="background: #e2e8f0; border-radius: 10px; height: 8px; width: 80px;">
+                                                <div style="background: #ef4444; height: 100%; width: 36%; border-radius: 10px;"></div>
+                                            </div>
+                                            <small>36%</small>
+                                        </td>
+                                        <td><span class="badge badge-warning">In Progress</span></td>
+                                        <td>
+                                            <button class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.75rem;" onclick="manageCourse('Python Programming')">
+                                                Manage
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Recent Activity</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="recent-activity">
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <i class="fas fa-certificate"></i>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-title">5 certificates issued for React Development</div>
+                                        <div class="activity-time">1 hour ago</div>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <i class="fas fa-user-plus"></i>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-title">New trainer Sarah Trainer added to system</div>
+                                        <div class="activity-time">3 hours ago</div>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <i class="fas fa-book"></i>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-title">Database Design course created</div>
+                                        <div class="activity-time">1 day ago</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Quick Actions</h3>
+                        </div>
+                        <div class="card-body">
+                            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                                <button class="btn btn-primary" onclick="createCourse()">
+                                    <i class="fas fa-plus"></i>
+                                    Create Course
+                                </button>
+                                <button class="btn btn-success" onclick="addUser()">
+                                    <i class="fas fa-user-plus"></i>
+                                    Add User
+                                </button>
+                                <button class="btn btn-warning" onclick="assignTrainer()">
+                                    <i class="fas fa-user-tie"></i>
+                                    Assign Trainer
+                                </button>
+                                <button class="btn btn-info" onclick="viewAllReports()">
+                                    <i class="fas fa-chart-bar"></i>
+                                    View All Reports
+                                </button>
+                                <button class="btn btn-outline" onclick="systemSettings()">
+                                    <i class="fas fa-cog"></i>
+                                    System Settings
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">System Status</h3>
+                        </div>
+                        <div class="card-body">
+                            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Server Status</span>
+                                    <span class="badge badge-success">Online</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Database</span>
+                                    <span class="badge badge-success">Connected</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Backup Status</span>
+                                    <span class="badge badge-success">Up to date</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Storage Used</span>
+                                    <span style="font-size: 0.875rem; color: var(--text-light);">2.4GB / 10GB</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="scripts/auth.js"></script>
+    <script src="scripts/manager-dashboard.js"></script>
+</body>
+</html>
