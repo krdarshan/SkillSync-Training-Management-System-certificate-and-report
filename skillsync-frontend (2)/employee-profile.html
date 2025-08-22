@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Profile - SkillSync</title>
+    <link rel="stylesheet" href="styles/enhanced-main.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <nav class="dashboard-nav">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h1>SkillSync</h1>
+                </div>
+                <div class="nav-links">
+                    <a href="employee-dashboard.html" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                    <a href="employee-courses.html" class="nav-link">
+                        <i class="fas fa-book"></i> My Courses
+                    </a>
+                    <a href="employee-certificates.html" class="nav-link">
+                        <i class="fas fa-certificate"></i> Certificates
+                    </a>
+                    <a href="employee-profile.html" class="nav-link active">
+                        <i class="fas fa-user"></i> Profile
+                    </a>
+                </div>
+                <div class="user-info">
+                    <span id="userName">Loading...</span>
+                    <button onclick="logout()" class="btn btn-secondary">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </nav>
+        </header>
+
+        <main class="dashboard-content">
+            <!-- Profile Section -->
+            <div class="profile-section">
+                <div class="card fade-in" style="max-width: 800px; margin: 0 auto;">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-user-circle"></i> Your Profile
+                        </h2>
+                    </div>
+                    <!-- Profile View Mode -->
+                    <div id="profileView" style="display: block;">
+                        <div class="profile-image-section" style="text-align:center; margin-bottom:2rem;">
+                            <img id="profileImageView" src="https://ui-avatars.com/api/?name=Employee" alt="Profile Image" style="width:120px; height:120px; border-radius:50%; object-fit:cover; border:3px solid #2563eb; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                        </div>
+                        <div class="profile-details-grid">
+                            <div><strong>Full Name:</strong> <span id="viewName"></span></div>
+                            <div><strong>Email:</strong> <span id="viewEmail"></span></div>
+                            <div><strong>Phone:</strong> <span id="viewPhone"></span></div>
+                            <div><strong>Department:</strong> <span id="viewDepartment"></span></div>
+                            <div><strong>Position:</strong> <span id="viewPosition"></span></div>
+                            <div><strong>Address:</strong> <span id="viewAddress"></span></div>
+                            <div style="grid-column: 1 / -1;"><strong>Bio:</strong> <span id="viewBio"></span></div>
+                        </div>
+                        <button id="editProfileBtn" class="btn btn-primary" style="margin-top:2rem; width:100%;">
+                            <i class="fas fa-edit"></i> Edit Profile
+                        </button>
+                    </div>
+                    <!-- Profile Edit Mode -->
+                    <form id="profileForm" class="auth-form active" autocomplete="off" style="display: none;">
+                        <div class="profile-image-section" style="text-align:center; margin-bottom:2rem;">
+                            <img id="profileImage" src="https://ui-avatars.com/api/?name=Employee" alt="Profile Image" style="width:120px; height:120px; border-radius:50%; object-fit:cover; border:3px solid #2563eb; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                            <br>
+                            <input type="url" id="profileImageUrl" name="profileImageUrl" placeholder="Profile Image URL" style="margin-top:1rem; width:80%; max-width:400px;">
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="name">Full Name</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" required disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone</label>
+                                <input type="text" id="phone" name="phone">
+                            </div>
+                            <div class="form-group">
+                                <label for="department">Department</label>
+                                <input type="text" id="department" name="department">
+                            </div>
+                            <div class="form-group">
+                                <label for="position">Position</label>
+                                <input type="text" id="position" name="position">
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Address</label>
+                                <input type="text" id="address" name="address">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="bio">Bio</label>
+                            <textarea id="bio" name="bio" rows="4" style="width:100%; resize:vertical;"></textarea>
+                        </div>
+                        <div style="display:flex; gap:1rem;">
+                            <button type="submit" class="btn btn-primary" style="width:100%; margin-top:1rem;">
+                                <i class="fas fa-save"></i> Save Profile
+                            </button>
+                            <button type="button" id="cancelEditBtn" class="btn btn-secondary" style="width:100%; margin-top:1rem;">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Course Statistics Dashboard and Course Lists (unchanged) -->
+            <div class="stats-dashboard">
+                <div class="card fade-in">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-chart-bar"></i> Your Learning Statistics
+                        </h3>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-book-open"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h4 id="statTotalCourses">0</h4>
+                                <p>Total Enrolled</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon completed">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h4 id="statCompletedCourses">0</h4>
+                                <p>Completed</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon in-progress">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h4 id="statInProgressCourses">0</h4>
+                                <p>In Progress</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon certificates">
+                                <i class="fas fa-award"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h4 id="statCertificates">0</h4>
+                                <p>Certificates</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon hours">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h4 id="statTotalHours">0</h4>
+                                <p>Total Hours</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon progress">
+                                <i class="fas fa-percentage"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h4 id="statCompletionRate">0%</h4>
+                                <p>Completion Rate</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="courses-section">
+                <div class="courses-grid">
+                    <div class="card fade-in">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-check-circle" style="color: #10b981;"></i> Completed Courses
+                            </h3>
+                        </div>
+                        <div id="completedCoursesList" class="course-list">
+                            <div class="loading-placeholder">
+                                <i class="fas fa-spinner fa-spin"></i> Loading completed courses...
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card fade-in">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-clock" style="color: #f59e0b;"></i> In Progress Courses
+                            </h3>
+                        </div>
+                        <div id="inProgressCoursesList" class="course-list">
+                            <div class="loading-placeholder">
+                                <i class="fas fa-spinner fa-spin"></i> Loading in-progress courses...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <style>
+    .profile-details-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem 2rem;
+        margin-bottom: 1.5rem;
+        font-size: 1.05rem;
+    }
+    .profile-details-grid div {
+        padding: 0.5rem 0;
+    }
+    @media (max-width: 768px) {
+        .profile-details-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    </style>
+    <script src="scripts/enhanced-auth.js"></script>
+    <script>
+    const API_BASE_URL = "http://localhost:8080/api";
+    let profileData = {};
+    document.addEventListener("DOMContentLoaded", () => {
+        loadProfile();
+        loadProfileStats();
+        loadUserCourses();
+        document.getElementById('profileForm').addEventListener('submit', saveProfile);
+        document.getElementById('profileImageUrl').addEventListener('input', function() {
+            document.getElementById('profileImage').src = this.value || 'https://ui-avatars.com/api/?name=Employee';
+        });
+        document.getElementById('editProfileBtn').addEventListener('click', showEditProfile);
+        document.getElementById('cancelEditBtn').addEventListener('click', showProfileView);
+    });
+    function getAuthHeader() {
+        const user = JSON.parse(localStorage.getItem('skillsync_user'));
+        return user && user.token ? { 'Authorization': 'Bearer ' + user.token } : {};
+    }
+    function loadProfile() {
+        fetch(API_BASE_URL + '/profile', { headers: getAuthHeader() })
+            .then(res => res.json())
+            .then(data => {
+                profileData = data;
+                document.getElementById('userName').textContent = data.name;
+                // View mode
+                document.getElementById('profileImageView').src = data.profileImageUrl || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(data.name || 'Employee');
+                document.getElementById('viewName').textContent = data.name || '';
+                document.getElementById('viewEmail').textContent = data.email || '';
+                document.getElementById('viewPhone').textContent = data.phone || '';
+                document.getElementById('viewDepartment').textContent = data.department || '';
+                document.getElementById('viewPosition').textContent = data.position || '';
+                document.getElementById('viewAddress').textContent = data.address || '';
+                document.getElementById('viewBio').textContent = data.bio || '';
+                // Edit mode
+                document.getElementById('name').value = data.name || '';
+                document.getElementById('email').value = data.email || '';
+                document.getElementById('phone').value = data.phone || '';
+                document.getElementById('address').value = data.address || '';
+                document.getElementById('department').value = data.department || '';
+                document.getElementById('position').value = data.position || '';
+                document.getElementById('bio').value = data.bio || '';
+                document.getElementById('profileImageUrl').value = data.profileImageUrl || '';
+                document.getElementById('profileImage').src = data.profileImageUrl || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(data.name || 'Employee');
+                showProfileView();
+            })
+            .catch(error => {
+                console.error('Error loading profile:', error);
+                window.skillSyncAuth?.showError('Failed to load profile data.');
+            });
+    }
+    function showEditProfile() {
+        document.getElementById('profileView').style.display = 'none';
+        document.getElementById('profileForm').style.display = 'block';
+    }
+    function showProfileView() {
+        document.getElementById('profileForm').style.display = 'none';
+        document.getElementById('profileView').style.display = 'block';
+    }
+    function saveProfile(e) {
+        e.preventDefault();
+        const payload = {
+            name: document.getElementById('name').value,
+            phone: document.getElementById('phone').value,
+            address: document.getElementById('address').value,
+            department: document.getElementById('department').value,
+            position: document.getElementById('position').value,
+            profileImageUrl: document.getElementById('profileImageUrl').value,
+            bio: document.getElementById('bio').value
+        };
+        fetch(API_BASE_URL + '/profile', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
+            body: JSON.stringify(payload)
+        })
+        .then(res => res.json())
+        .then(data => {
+            window.skillSyncAuth?.showSuccess('Profile updated successfully!');
+            loadProfile();
+        })
+        .catch(() => window.skillSyncAuth?.showError('Failed to update profile.'));
+    }
+    function loadProfileStats() {
+        fetch(API_BASE_URL + '/profile/profits', { headers: getAuthHeader() })
+            .then(res => res.json())
+            .then(stats => {
+                document.getElementById('statTotalCourses').textContent = stats.totalCourses || 0;
+                document.getElementById('statCompletedCourses').textContent = stats.completedCourses || 0;
+                document.getElementById('statCertificates').textContent = stats.certificates || 0;
+                document.getElementById('statTotalHours').textContent = (stats.totalHours || 0).toFixed(1);
+                const inProgress = (stats.totalCourses || 0) - (stats.completedCourses || 0);
+                document.getElementById('statInProgressCourses').textContent = inProgress;
+                const completionRate = stats.totalCourses > 0 ? Math.round((stats.completedCourses / stats.totalCourses) * 100) : 0;
+                document.getElementById('statCompletionRate').textContent = completionRate + '%';
+            })
+            .catch(error => {
+                console.error('Error loading stats:', error);
+            });
+    }
+    function loadUserCourses() {
+        fetch(API_BASE_URL + '/enrollments/user', { headers: getAuthHeader() })
+            .then(res => res.json())
+            .then(enrollments => {
+                const completedCourses = enrollments.filter(e => e.status === 'COMPLETED');
+                const inProgressCourses = enrollments.filter(e => e.status === 'IN_PROGRESS' || e.status === 'ENROLLED');
+                displayCourses(completedCourses, 'completedCoursesList', 'completed');
+                displayCourses(inProgressCourses, 'inProgressCoursesList', 'in-progress');
+            })
+            .catch(error => {
+                console.error('Error loading courses:', error);
+                showEmptyState('completedCoursesList', 'No completed courses yet');
+                showEmptyState('inProgressCoursesList', 'No courses in progress');
+            });
+    }
+    function displayCourses(courses, containerId, type) {
+        const container = document.getElementById(containerId);
+        if (courses.length === 0) {
+            showEmptyState(containerId, type === 'completed' ? 'No completed courses yet' : 'No courses in progress');
+            return;
+        }
+        container.innerHTML = courses.map(course => `
+            <div class="course-item">
+                <div class="course-icon ${type === 'completed' ? 'completed' : 'in-progress'}">
+                    <i class="fas ${type === 'completed' ? 'fa-check' : 'fa-clock'}"></i>
+                </div>
+                <div class="course-info">
+                    <h4>${course.course.name}</h4>
+                    <p>${course.course.category} • ${course.progressPercentage || 0}% complete</p>
+                </div>
+            </div>
+        `).join('');
+    }
+    function showEmptyState(containerId, message) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-inbox"></i>
+                <p>${message}</p>
+            </div>
+        `;
+    }
+    </script>
+</body>
+</html>

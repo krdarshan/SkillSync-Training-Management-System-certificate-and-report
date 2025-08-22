@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backend Test</title>
+</head>
+<body>
+    <h1>SkillSync Backend Test</h1>
+    
+    <div>
+        <h2>Test Registration</h2>
+        <button onclick="testRegistration()">Test Registration API</button>
+        <div id="registration-result"></div>
+    </div>
+    
+    <div>
+        <h2>Test Login</h2>
+        <button onclick="testLogin()">Test Login API</button>
+        <div id="login-result"></div>
+    </div>
+    
+    <div>
+        <h2>Test Courses</h2>
+        <button onclick="testCourses()">Test Courses API</button>
+        <div id="courses-result"></div>
+    </div>
+
+    <script>
+        const API_BASE_URL = "http://localhost:8080/api";
+        
+        async function testRegistration() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: "Test User",
+                        email: "test@example.com",
+                        password: "password123"
+                    })
+                });
+                
+                const result = await response.json();
+                document.getElementById('registration-result').innerHTML = 
+                    `<pre>${JSON.stringify(result, null, 2)}</pre>`;
+            } catch (error) {
+                document.getElementById('registration-result').innerHTML = 
+                    `<p style="color: red;">Error: ${error.message}</p>`;
+            }
+        }
+        
+        async function testLogin() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: "trainer@skillsync.com",
+                        password: "password123",
+                        role: "trainer"
+                    })
+                });
+                
+                const result = await response.json();
+                document.getElementById('login-result').innerHTML = 
+                    `<pre>${JSON.stringify(result, null, 2)}</pre>`;
+            } catch (error) {
+                document.getElementById('login-result').innerHTML = 
+                    `<p style="color: red;">Error: ${error.message}</p>`;
+            }
+        }
+        
+        async function testCourses() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/courses`);
+                const result = await response.json();
+                document.getElementById('courses-result').innerHTML = 
+                    `<pre>${JSON.stringify(result, null, 2)}</pre>`;
+            } catch (error) {
+                document.getElementById('courses-result').innerHTML = 
+                    `<p style="color: red;">Error: ${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html> 
